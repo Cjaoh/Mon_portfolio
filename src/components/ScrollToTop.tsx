@@ -1,20 +1,13 @@
 "use client";
-
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { ArrowUp } from "lucide-react";
 import { useState } from "react";
 
 export default function ScrollToTop() {
   const { scrollY } = useScroll();
   const [isVisible, setIsVisible] = useState(false);
 
-  // Optimisé : on surveille le scroll sans ralentir la page
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsVisible(latest > 300);
-  });
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  useMotionValueEvent(scrollY, "change", (v) => setIsVisible(v > 300));
 
   return (
     <AnimatePresence>
@@ -23,21 +16,18 @@ export default function ScrollToTop() {
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.5 }}
-          whileHover={{ scale: 1.1, backgroundColor: "#2563eb" }}
+          whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 flex ..." 
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           aria-label="Retour en haut"
+          className="fixed bottom-8 right-8 z-50 p-3 rounded-xl"
+          style={{
+            backgroundColor: "var(--accent)",
+            color: "#fff",
+            boxShadow: "0 4px 20px var(--accent-glow)",
+          }}
         >
-          <svg 
-            xmlns="http://w3.org" 
-            fill="none" viewBox="0 0 24 24" 
-            strokeWidth={2.5} 
-            stroke="currentColor" 
-            className="w-6 h-6"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
-          </svg>
+          <ArrowUp className="w-5 h-5" />
         </motion.button>
       )}
     </AnimatePresence>

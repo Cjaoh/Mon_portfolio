@@ -1,77 +1,172 @@
-"use client"
-import { motion } from "framer-motion"
-import Skills from "@/components/Skills"
-import Projects from "@/components/Projects"
-import Contact from "@/components/Contact"
-import FadeIn from "@/components/FadeIn"
-import ProfileImage from "@/components/ProfileImage"; // L'import est déjà bon
+"use client";
+
+import { motion } from "framer-motion";
+import Skills       from "@/components/Skills";
+import Projects     from "@/components/Projects";
+import Contact      from "@/components/Contact";
+import FadeIn       from "@/components/FadeIn";
+import ProfileImage from "@/components/ProfileImage";
+import { Download } from "lucide-react";
+
+const STATS = [
+  { value: "2+", label: "ans d'XP" },
+  { value: "4",  label: "projets"  },
+  { value: "5",  label: "technos"  },
+];
 
 export default function Home() {
   return (
     <>
-      <main className="flex flex-col items-center justify-center min-h-screen bg-black px-6 relative overflow-hidden">
-        {/* Effet de Halo lumineux en arrière-plan */}
-        <div className="absolute top-1/4 w-150 h-100 bg-blue-600/20 blur-[120px] rounded-full -z-10" />
-        
-        {/* Grille : Colonne unique sur mobile, 2 colonnes sur grand écran (md) */}
-        <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center z-10">
-          
-          {/* Bloc de Gauche : Textes et Boutons */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            className="text-center md:text-left flex flex-col md:items-start"
+      {/* ============ HERO ============ */}
+      <section className="relative flex items-center justify-center min-h-screen px-6 pt-20 overflow-hidden">
+
+        {/* Fond radial */}
+        <div className="hero-bg-gradient absolute inset-0 -z-10" />
+
+        {/* Grille légère */}
+        <div
+          className="absolute inset-0 -z-10 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "linear-gradient(var(--text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--text-primary) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+
+        <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+
+          {/* Textes */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="flex flex-col items-center md:items-start text-center md:text-left"
           >
-            <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-white uppercase leading-none">
-              RATOVONANAHARY <br />
-              <span className="text-blue-500">Cédrick</span>
+            {/* Badge disponible */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+              className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold"
+              style={{
+                backgroundColor: "var(--bg-card)",
+                border: "1px solid var(--border-color)",
+                color: "var(--text-secondary)",
+              }}
+            >
+              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+              Disponible pour stage / freelance
+            </motion.div>
+
+            <h1
+              className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] uppercase"
+              style={{ color: "var(--text-primary)" }}
+            >
+              RATOVONANAHARY
+              <br />
+              <span className="gradient-text">Cédrick</span>
             </h1>
-            
-            <h2 className="mt-4 text-xl md:text-2xl font-bold text-gray-200">
-              Développeur Full Stack Senior en devenir
+
+            <h2
+              className="mt-5 text-xl md:text-2xl font-semibold"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              Développeur Full Stack
             </h2>
 
-            <p className="mt-6 text-gray-400 text-base md:text-lg leading-relaxed">
-              Fort de **2 ans d&apos;expérience** en autodidacte et projets académiques, 
-              je conçois des solutions digitales robustes et scalables. 
-              Expertise focalisée sur les architectures modernes et l&apos;optimisation de l&apos;expérience utilisateur.
+            <p
+              className="mt-5 text-base md:text-lg leading-relaxed max-w-lg"
+              style={{ color: "var(--text-muted)" }}
+            >
+              2 ans d&apos;expérience en autodidacte et projets académiques.
+              Je conçois des solutions digitales robustes et scalables, avec
+              une expertise sur les architectures modernes et l&apos;expérience utilisateur.
             </p>
-            
+
+            {/* CTA */}
             <div className="mt-10 flex flex-wrap gap-4 justify-center md:justify-start">
-              <a href="#skills" className="bg-white text-black px-8 py-3 rounded-full font-bold hover:scale-105 transition-transform cursor-pointer">
-                Explorer ma stack
+              <a
+                href="#projets"
+                className="px-7 py-3 rounded-full font-bold text-sm text-white transition-all hover:scale-105 hover:shadow-lg"
+                style={{
+                  background: "linear-gradient(135deg, var(--accent), var(--accent-secondary))",
+                  boxShadow: "0 4px 24px var(--accent-glow)",
+                }}
+              >
+                Voir mes projets
               </a>
-              <a href="#contact" className="border border-white/20 text-white px-8 py-3 rounded-full font-bold hover:bg-white/10 transition cursor-pointer">
+              <a
+                href="#contact"
+                className="px-7 py-3 rounded-full font-bold text-sm transition-all hover:scale-105"
+                style={{
+                  backgroundColor: "var(--bg-card)",
+                  border: "1px solid var(--border-color)",
+                  color: "var(--text-primary)",
+                }}
+              >
                 Me contacter
               </a>
+              <a
+                href="/cv.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-7 py-3 rounded-full font-bold text-sm transition-all hover:scale-105"
+                style={{
+                  border: "1px solid var(--accent)",
+                  color: "var(--accent)",
+                }}
+              >
+                <Download className="w-4 h-4" />
+                CV
+              </a>
+            </div>
+
+            {/* Stats */}
+            <div className="mt-12 flex gap-8">
+              {STATS.map((s) => (
+                <div key={s.label}>
+                  <p className="text-2xl font-black gradient-text">{s.value}</p>
+                  <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{s.label}</p>
+                </div>
+              ))}
             </div>
           </motion.div>
 
-          {/* Bloc de Droite : La photo de profil plus grande */}
+          {/* Photo */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 0.9, delay: 0.15 }}
             className="flex justify-center md:justify-end order-first md:order-last"
           >
             <ProfileImage />
           </motion.div>
-
         </div>
-      </main>
 
-      <FadeIn>
-        <Skills />
-      </FadeIn>
+        {/* Flèche scroll */}
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer"
+          style={{ color: "var(--text-muted)" }}
+          onClick={() => document.getElementById("skills")?.scrollIntoView({ behavior: "smooth" })}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </motion.div>
+      </section>
 
-      <FadeIn delay={0.2}>
-        <Projects />
-      </FadeIn>
-
-      <FadeIn delay={0.3}>
-        <Contact />
-      </FadeIn>
+      <FadeIn><Skills /></FadeIn>
+      <FadeIn delay={0.2}><Projects /></FadeIn>
+      <FadeIn delay={0.3}><Contact /></FadeIn>
     </>
-  )
+  );
 }
