@@ -1,101 +1,158 @@
 @import "tailwindcss";
 
-/* ===========================
-   VARIABLES THÈME DARK / LIGHT
-   =========================== */
+/* =====================================================
+   DESIGN SYSTEM — CYBER DARK
+   Palette : Noir absolu + Cyan électrique + Violet royal
+   ===================================================== */
 
-:root,
-[data-theme="dark"] {
-  --bg-primary:       #0a0a0f;
-  --bg-secondary:     #111118;
-  --bg-card:          rgba(255,255,255,0.04);
-  --bg-card-hover:    rgba(255,255,255,0.07);
-  --border-color:     rgba(255,255,255,0.09);
-  --border-hover:     rgba(59,130,246,0.45);
+:root {
+  /* Fond */
+  --bg-base:          #000000;
+  --bg-deep:          #0B0B0F;
+  --bg-surface:       #0F0F14;
 
-  --text-primary:     #f0f4ff;
-  --text-secondary:   #a0aec0;
-  --text-muted:       #5a6a85;
+  /* Glassmorphism */
+  --glass-bg:         rgba(255, 255, 255, 0.04);
+  --glass-bg-hover:   rgba(255, 255, 255, 0.07);
+  --glass-border:     rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(0, 212, 255, 0.40);
 
-  --accent:           #3b82f6;
-  --accent-glow:      rgba(59,130,246,0.25);
-  --accent-secondary: #8b5cf6;
+  /* Accents */
+  --cyan:             #00D4FF;
+  --cyan-glow:        rgba(0, 212, 255, 0.28);
+  --cyan-soft:        rgba(0, 212, 255, 0.12);
+  --violet:           #7B2FFF;
+  --violet-glow:      rgba(123, 47, 255, 0.28);
+  --violet-soft:      rgba(123, 47, 255, 0.12);
 
-  --nav-bg:           rgba(10,10,15,0.80);
-  --nav-border:       rgba(255,255,255,0.07);
+  /* Textes */
+  --text-white:       #FFFFFF;
+  --text-lunar:       #C8D0E0;
+  --text-muted:       #5A6A85;
 
-  --footer-bg:        #0a0a0f;
-  --footer-border:    rgba(255,255,255,0.07);
-  --footer-text:      #5a6a85;
+  /* Navigation */
+  --nav-bg:           rgba(0, 0, 0, 0.75);
+  --nav-border:       rgba(255, 255, 255, 0.06);
 
-  --shadow-glow:      0 0 60px rgba(59,130,246,0.12);
-  --shadow-card:      0 8px 40px rgba(0,0,0,0.5);
+  /* Ombres */
+  --shadow-cyan:      0 0 40px rgba(0, 212, 255, 0.20);
+  --shadow-violet:    0 0 40px rgba(123, 47, 255, 0.20);
+  --shadow-card:      0 8px 48px rgba(0, 0, 0, 0.70);
+
+  /* Garder compatibilité avec l'existant */
+  --bg-primary:       #000000;
+  --bg-secondary:     #0B0B0F;
+  --bg-card:          rgba(255, 255, 255, 0.04);
+  --bg-card-hover:    rgba(255, 255, 255, 0.07);
+  --border-color:     rgba(255, 255, 255, 0.08);
+  --border-hover:     rgba(0, 212, 255, 0.40);
+  --text-primary:     #FFFFFF;
+  --text-secondary:   #C8D0E0;
+  --accent:           #00D4FF;
+  --accent-glow:      rgba(0, 212, 255, 0.28);
+  --accent-secondary: #7B2FFF;
+  --footer-bg:        #000000;
+  --footer-border:    rgba(255, 255, 255, 0.06);
+  --footer-text:      #5A6A85;
+  --shadow-card:      0 8px 48px rgba(0, 0, 0, 0.70);
 }
 
-[data-theme="light"] {
-  --bg-primary:       #f8faff;
-  --bg-secondary:     #ffffff;
-  --bg-card:          rgba(255,255,255,0.85);
-  --bg-card-hover:    rgba(255,255,255,1);
-  --border-color:     rgba(0,0,60,0.09);
-  --border-hover:     rgba(59,130,246,0.55);
+/* =====================================================
+   BASE
+   ===================================================== */
 
-  --text-primary:     #0d1120;
-  --text-secondary:   #374151;
-  --text-muted:       #9ca3af;
-
-  --accent:           #2563eb;
-  --accent-glow:      rgba(37,99,235,0.18);
-  --accent-secondary: #7c3aed;
-
-  --nav-bg:           rgba(248,250,255,0.88);
-  --nav-border:       rgba(0,0,60,0.08);
-
-  --footer-bg:        #ffffff;
-  --footer-border:    rgba(0,0,60,0.08);
-  --footer-text:      #9ca3af;
-
-  --shadow-glow:      0 0 80px rgba(37,99,235,0.10);
-  --shadow-card:      0 4px 32px rgba(0,0,80,0.08);
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-base);
 }
-
-/* =============================
-   BASE STYLES
-   ============================= */
-
-html { scroll-behavior: smooth; }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  transition: background-color 0.35s ease, color 0.35s ease;
+  background-color: var(--bg-base);
+  color: var(--text-white);
+  -webkit-font-smoothing: antialiased;
 }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
-
-::selection { background: rgba(59,130,246,0.35); color: var(--text-primary); }
-
-.hero-bg-gradient {
-  background: radial-gradient(ellipse 80% 60% at 60% 30%, var(--accent-glow), transparent 70%);
+/* Scrollbar fine cyan */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--cyan), var(--violet));
+  border-radius: 4px;
 }
 
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
-  box-shadow: var(--shadow-card);
+::selection { background: rgba(0, 212, 255, 0.30); color: #fff; }
+
+/* =====================================================
+   GRAIN OVERLAY — calque de bruit numérique (2% opacité)
+   Un SVG inline en pseudo-element sur le body
+   ===================================================== */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
 }
 
-.card:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-hover);
-}
+/* =====================================================
+   CLASSES UTILITAIRES
+   ===================================================== */
 
+/* Texte dégradé cyan → violet */
 .gradient-text {
-  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Carte verre dépoli — base */
+.card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-card);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--shadow-card), var(--shadow-cyan);
+}
+
+/* Hero gradient radial — réutilisé dans page.tsx */
+.hero-bg-gradient {
+  background: radial-gradient(
+    ellipse 80% 60% at 60% 30%,
+    var(--cyan-glow),
+    transparent 70%
+  );
+}
+
+/* =====================================================
+   ANIMATIONS GLOBALES
+   ===================================================== */
+
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(30px, -40px) scale(1.04); }
+  66%       { transform: translate(-20px, 20px) scale(0.97); }
+}
+
+@keyframes float-medium {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(-50px, 30px) scale(1.06); }
+  70%       { transform: translate(40px, -30px) scale(0.96); }
+}
+
+@keyframes float-fast {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(25px, 25px) scale(1.03); }
 }

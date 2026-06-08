@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Variants } from "framer-motion";
 import Skills       from "@/components/Skills";
 import Projects     from "@/components/Projects";
 import Contact      from "@/components/Contact";
@@ -8,165 +9,298 @@ import FadeIn       from "@/components/FadeIn";
 import ProfileImage from "@/components/ProfileImage";
 import { Download } from "lucide-react";
 
+/* Animation variants pour le stagger */
+const containerVariants: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.2 },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeInOut" } },
+};
+
 const STATS = [
-  { value: "2+", label: "ans d'XP" },
-  { value: "4",  label: "projets"  },
-  { value: "5",  label: "technos"  },
+  { value: "2+", label: "ans d'XP"  },
+  { value: "4",  label: "Projets"   },
+  { value: "5+", label: "Technos"   },
 ];
 
 export default function Home() {
   return (
     <>
-      {/* ============ HERO ============ */}
-      <section className="relative flex items-center justify-center min-h-screen px-6 pt-20 overflow-hidden">
-
-        {/* Fond radial */}
-        <div className="hero-bg-gradient absolute inset-0 -z-10" />
-
-        {/* Grille légère */}
+      {/* ================================================================
+          HERO
+          ================================================================ */}
+      <section
+        style={{
+          position:      "relative",
+          minHeight:     "100vh",
+          display:       "flex",
+          alignItems:    "center",
+          justifyContent:"center",
+          padding:       "100px 24px 60px",
+          zIndex:        2,
+        }}
+      >
         <div
-          className="absolute inset-0 -z-10 opacity-[0.03]"
           style={{
-            backgroundImage:
-              "linear-gradient(var(--text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--text-primary) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
+            maxWidth:            "1200px",
+            width:               "100%",
+            display:             "grid",
+            gridTemplateColumns: "1fr",
+            gap:                 "60px",
+            alignItems:          "center",
           }}
-        />
-
-        <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-
-          {/* Textes */}
+          className="md:grid-cols-2-hero"
+        >
+          {/* ——— Colonne TEXTE ——— */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="flex flex-col items-center md:items-start text-center md:text-left"
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+            style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}
           >
             {/* Badge disponible */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 }}
-              className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold"
-              style={{
-                backgroundColor: "var(--bg-card)",
-                border: "1px solid var(--border-color)",
-                color: "var(--text-secondary)",
-              }}
-            >
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-              Disponible pour stage / freelance
+            <motion.div variants={itemVariants}>
+              <div
+                style={{
+                  display:         "inline-flex",
+                  alignItems:      "center",
+                  gap:             "8px",
+                  padding:         "6px 16px",
+                  borderRadius:    "50px",
+                  background:      "var(--cyan-dim)",
+                  border:          "1px solid rgba(0,212,255,0.2)",
+                  marginBottom:    "28px",
+                }}
+              >
+                <span
+                  style={{
+                    width: "8px", height: "8px",
+                    borderRadius: "50%",
+                    background: "#4ADE80",
+                    boxShadow: "0 0 8px #4ADE80",
+                    animation: "pulse 2s infinite",
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily:    "var(--font-body)",
+                    fontSize:      "12px",
+                    fontWeight:    700,
+                    color:         "var(--cyan)",
+                    letterSpacing: "0.05em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Disponible pour stage / freelance
+                </span>
+              </div>
             </motion.div>
 
-            <h1
-              className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] uppercase"
-              style={{ color: "var(--text-primary)" }}
-            >
-              RATOVONANAHARY
-              <br />
-              <span className="gradient-text">Cédrick</span>
-            </h1>
-
-            <h2
-              className="mt-5 text-xl md:text-2xl font-semibold"
-              style={{ color: "var(--text-secondary)" }}
-            >
-              Développeur Full Stack
-            </h2>
-
-            <p
-              className="mt-5 text-base md:text-lg leading-relaxed max-w-lg"
-              style={{ color: "var(--text-muted)" }}
-            >
-              2 ans d&apos;expérience en autodidacte et projets académiques.
-              Je conçois des solutions digitales robustes et scalables, avec
-              une expertise sur les architectures modernes et l&apos;expérience utilisateur.
-            </p>
-
-            {/* CTA */}
-            <div className="mt-10 flex flex-wrap gap-4 justify-center md:justify-start">
-              <a
-                href="#projets"
-                className="px-7 py-3 rounded-full font-bold text-sm text-white transition-all hover:scale-105 hover:shadow-lg"
+            {/* Nom principal */}
+            <motion.div variants={itemVariants}>
+              <h1
                 style={{
-                  background: "linear-gradient(135deg, var(--accent), var(--accent-secondary))",
-                  boxShadow: "0 4px 24px var(--accent-glow)",
+                  fontFamily:    "var(--font-display)",
+                  fontWeight:    800,
+                  fontSize:      "clamp(42px, 6vw, 80px)",
+                  lineHeight:    0.9,
+                  letterSpacing: "-0.03em",
+                  color:         "var(--text-white)",
+                  textTransform: "uppercase",
+                  marginBottom:  "12px",
                 }}
               >
+                RATOVONANAHARY
+              </h1>
+              <h1
+                style={{
+                  fontFamily:    "var(--font-display)",
+                  fontWeight:    800,
+                  fontSize:      "clamp(42px, 6vw, 80px)",
+                  lineHeight:    0.9,
+                  letterSpacing: "-0.03em",
+                  background:    "linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor:  "transparent",
+                  backgroundClip: "text",
+                  textTransform: "uppercase",
+                  marginBottom:  "24px",
+                }}
+              >
+                Cédrick
+              </h1>
+            </motion.div>
+
+            {/* Titre poste */}
+            <motion.div variants={itemVariants}>
+              <h2
+                style={{
+                  fontFamily:  "var(--font-body)",
+                  fontWeight:  500,
+                  fontSize:    "clamp(16px, 2vw, 22px)",
+                  color:       "var(--text-lunar)",
+                  marginBottom:"20px",
+                  letterSpacing:"0.01em",
+                }}
+              >
+                Développeur Full Stack
+              </h2>
+            </motion.div>
+
+            {/* Description */}
+            <motion.div variants={itemVariants}>
+              <p
+                style={{
+                  fontFamily:  "var(--font-body)",
+                  fontSize:    "15px",
+                  lineHeight:  1.75,
+                  color:       "var(--text-muted)",
+                  maxWidth:    "480px",
+                  marginBottom:"36px",
+                }}
+              >
+                2 ans d&apos;expérience en autodidacte et projets académiques.
+                Je conçois des solutions digitales robustes et scalables, avec
+                une expertise sur les architectures modernes et l&apos;expérience utilisateur.
+              </p>
+            </motion.div>
+
+            {/* CTA Boutons */}
+            <motion.div
+              variants={itemVariants}
+              style={{ display: "flex", flexWrap: "wrap", gap: "14px", marginBottom: "48px" }}
+            >
+              <a href="#projets" className="btn-cyber btn-primary">
                 Voir mes projets
               </a>
-              <a
-                href="#contact"
-                className="px-7 py-3 rounded-full font-bold text-sm transition-all hover:scale-105"
-                style={{
-                  backgroundColor: "var(--bg-card)",
-                  border: "1px solid var(--border-color)",
-                  color: "var(--text-primary)",
-                }}
-              >
+              <a href="#contact" className="btn-cyber btn-ghost">
                 Me contacter
               </a>
               <a
                 href="/cv.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-7 py-3 rounded-full font-bold text-sm transition-all hover:scale-105"
-                style={{
-                  border: "1px solid var(--accent)",
-                  color: "var(--accent)",
-                }}
+                className="btn-cyber btn-outline-cyan"
               >
-                <Download className="w-4 h-4" />
+                <Download size={16} />
                 CV
               </a>
-            </div>
+            </motion.div>
 
             {/* Stats */}
-            <div className="mt-12 flex gap-8">
+            <motion.div
+              variants={itemVariants}
+              style={{ display: "flex", gap: "40px" }}
+            >
               {STATS.map((s) => (
                 <div key={s.label}>
-                  <p className="text-2xl font-black gradient-text">{s.value}</p>
-                  <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{s.label}</p>
+                  <p
+                    style={{
+                      fontFamily:  "var(--font-display)",
+                      fontWeight:  800,
+                      fontSize:    "28px",
+                      background:  "linear-gradient(135deg, var(--cyan), var(--violet))",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor:  "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    {s.value}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily:  "var(--font-body)",
+                      fontSize:    "12px",
+                      color:       "var(--text-muted)",
+                      marginTop:   "4px",
+                      textTransform:"uppercase",
+                      letterSpacing:"0.08em",
+                    }}
+                  >
+                    {s.label}
+                  </p>
                 </div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
 
-          {/* Photo */}
+          {/* ——— Colonne PHOTO ——— */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 60 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.15 }}
-            className="flex justify-center md:justify-end order-first md:order-last"
+            transition={{ duration: 1, delay: 0.3, ease: "easeInOut" }}
+            style={{
+              display:        "flex",
+              justifyContent: "center",
+              alignItems:     "center",
+            }}
           >
             <ProfileImage />
           </motion.div>
         </div>
 
         {/* Flèche scroll */}
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer"
-          style={{ color: "var(--text-muted)" }}
-          onClick={() => document.getElementById("skills")?.scrollIntoView({ behavior: "smooth" })}
+        <motion.button
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+          onClick={() =>
+            document.getElementById("skills")?.scrollIntoView({ behavior: "smooth" })
+          }
+          style={{
+            position:    "absolute",
+            bottom:      "32px",
+            left:        "50%",
+            transform:   "translateX(-50%)",
+            background:  "none",
+            border:      "none",
+            cursor:      "pointer",
+            color:       "var(--text-muted)",
+            zIndex:      3,
+          }}
+          aria-label="Défiler vers le bas"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6"
-            fill="none"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
+            fill="none"
             stroke="currentColor"
-            strokeWidth={2}
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            <path d="M12 5v14M5 12l7 7 7-7" />
           </svg>
-        </motion.div>
+        </motion.button>
       </section>
 
-      <FadeIn><Skills /></FadeIn>
-      <FadeIn delay={0.2}><Projects /></FadeIn>
-      <FadeIn delay={0.3}><Contact /></FadeIn>
+      {/* Séparateur */}
+      <div style={{ padding: "0 24px", zIndex: 2, position: "relative" }}>
+        <div className="cyber-line" />
+      </div>
+
+      <FadeIn><Skills   /></FadeIn>
+      <FadeIn delay={0.15}><Projects /></FadeIn>
+      <FadeIn delay={0.3}><Contact  /></FadeIn>
+
+      {/* Styles CSS internes */}
+      <style>{`
+        @media (min-width: 768px) {
+          .md\\:grid-cols-2-hero {
+            grid-template-columns: 1fr 1fr !important;
+          }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50%       { opacity: 0.4; }
+        }
+      `}</style>
     </>
   );
 }
