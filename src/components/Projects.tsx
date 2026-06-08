@@ -1,133 +1,237 @@
 "use client";
 
-import { motion }        from "framer-motion";
+import { motion } from "framer-motion";
 import { FolderGit2, ArrowUpRight } from "lucide-react";
-import Link              from "next/link";
-import { projectsData }  from "@/data/projectsData";
-import GlassCard         from "@/components/GlassCard";
+import Link from "next/link";
+import GlassCard from "@/components/GlassCard";
+import { projectsData } from "@/data/projectsData";
 
-/* Couleur d'accentuation par projet (alterne cyan / violet) */
-const ACCENTS = ["#00D4FF", "#7B2FFF", "#00D4FF", "#7B2FFF"];
+/* Couleur d'accent par techno */
+const TECH_COLORS: Record<string, string> = {
+  "Dart / Flutter":              "#38BDF8",
+  "TypeScript / Next.js":        "#00D4FF",
+  "Java / Angular / TypeScript": "#A78BFA",
+  "Dart / TypeScript":           "#4ADE80",
+};
 
 export default function Projects() {
   return (
-    <section id="projets" className="py-24 px-6">
-      <div className="max-w-5xl mx-auto">
+    <section
+      id="projets"
+      style={{
+        padding:  "120px 24px 100px",
+        position: "relative",
+        zIndex:   2,
+      }}
+    >
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
 
-        {/* En-tête */}
-        <div className="mb-14 text-center md:text-left">
+        {/* ——— Header ——— */}
+        <div style={{ marginBottom: "72px" }}>
           <p
-            className="text-xs font-bold uppercase tracking-widest mb-3"
-            style={{ color: "var(--cyan)" }}
+            style={{
+              fontFamily:    "var(--font-body)",
+              fontSize:      "11px",
+              fontWeight:    700,
+              textTransform: "uppercase",
+              letterSpacing: "0.18em",
+              color:         "var(--cyan)",
+              marginBottom:  "16px",
+            }}
           >
             Portfolio
           </p>
           <h2
-            className="text-3xl md:text-5xl font-black uppercase tracking-tighter"
-            style={{ color: "var(--text-white)" }}
+            style={{
+              fontFamily:    "var(--font-display)",
+              fontWeight:    800,
+              fontSize:      "clamp(36px, 5vw, 60px)",
+              letterSpacing: "-0.03em",
+              lineHeight:    1,
+              color:         "var(--text-white)",
+              textTransform: "uppercase",
+            }}
           >
             Projets{" "}
-            <span className="gradient-text">Sélectionnés</span>
+            <span
+              style={{
+                background:           "linear-gradient(135deg, var(--cyan), var(--violet))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor:  "transparent",
+                backgroundClip:       "text",
+              }}
+            >
+              Sélectionnés
+            </span>
           </h2>
         </div>
 
-        {/* Grille */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projectsData.map((project, index) => {
-            const accent = ACCENTS[index % ACCENTS.length];
+        {/* ——— Grille 2 colonnes ——— */}
+        <div
+          style={{
+            display:             "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(440px, 1fr))",
+            gap:                 "28px",
+          }}
+        >
+          {projectsData.map((project, i) => {
+            const accentColor = TECH_COLORS[project.tech] ?? "var(--cyan)";
 
             return (
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 40 }}
+                key={project.id}
+                initial={{ opacity: 0, y: 36 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
               >
                 <GlassCard
-                  className="p-7 flex flex-col justify-between h-full group"
-                  glowColor={
-                    accent === "#00D4FF"
-                      ? "rgba(0,212,255,0.10)"
-                      : "rgba(123,47,255,0.10)"
-                  }
                   style={{
-                    /* Bordure colorée en haut */
-                    borderTop: `1px solid ${accent}55`,
+                    padding:        "36px 32px",
+                    height:         "100%",
+                    display:        "flex",
+                    flexDirection:  "column",
+                    justifyContent: "space-between",
                   }}
+                  tilt
+                  spotlight
                 >
-                  {/* Haut */}
+                  {/* ——— Corps ——— */}
                   <div>
-                    <div className="flex justify-between items-start mb-5">
-                      {/* Badge techno */}
+                    {/* Tag tech + icône */}
+                    <div
+                      style={{
+                        display:         "flex",
+                        justifyContent:  "space-between",
+                        alignItems:      "center",
+                        marginBottom:    "28px",
+                      }}
+                    >
                       <span
-                        className="text-xs font-bold uppercase tracking-wider border px-3 py-1 rounded-full"
                         style={{
-                          color:           accent,
-                          borderColor:     `${accent}44`,
-                          backgroundColor: `${accent}12`,
+                          fontFamily:    "var(--font-body)",
+                          fontSize:      "10px",
+                          fontWeight:    700,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.12em",
+                          padding:       "5px 14px",
+                          borderRadius:  "50px",
+                          background:    `${accentColor}18`,
+                          border:        `1px solid ${accentColor}35`,
+                          color:         accentColor,
                         }}
                       >
                         {project.tech}
                       </span>
                       <FolderGit2
-                        className="w-5 h-5"
-                        style={{ color: accent, opacity: 0.6 }}
+                        size={20}
+                        style={{ color: "var(--text-muted)", flexShrink: 0 }}
                       />
                     </div>
 
                     {/* Titre */}
                     <h3
-                      className="text-xl font-black mb-2 transition-colors duration-200"
-                      style={{ color: "var(--text-white)" }}
+                      style={{
+                        fontFamily:    "var(--font-display)",
+                        fontWeight:    700,
+                        fontSize:      "22px",
+                        color:         "var(--text-white)",
+                        marginBottom:  "14px",
+                        letterSpacing: "-0.01em",
+                        lineHeight:    1.2,
+                      }}
                     >
                       {project.title}
                     </h3>
 
                     {/* Description */}
                     <p
-                      className="text-sm leading-relaxed"
-                      style={{ color: "var(--text-muted)" }}
+                      style={{
+                        fontFamily:  "var(--font-body)",
+                        fontSize:    "14px",
+                        color:       "var(--text-muted)",
+                        lineHeight:  1.7,
+                        marginBottom:"0",
+                      }}
                     >
                       {project.desc}
                     </p>
                   </div>
 
-                  {/* Bas — liens */}
+                  {/* ——— Footer carte ——— */}
                   <div
-                    className="mt-7 pt-5 flex items-center justify-between"
-                    style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+                    style={{
+                      marginTop:    "32px",
+                      paddingTop:   "24px",
+                      borderTop:    "1px solid rgba(255,255,255,0.06)",
+                      display:      "flex",
+                      alignItems:   "center",
+                      justifyContent:"space-between",
+                    }}
                   >
+                    {/* Voir le projet */}
                     <Link
                       href={`/projets/${project.id}`}
-                      className="text-sm font-semibold flex items-center gap-1.5 transition-colors duration-200"
-                      style={{ color: "var(--text-lunar)" }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = accent)}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-lunar)")}
+                      style={{
+                        display:       "inline-flex",
+                        alignItems:    "center",
+                        gap:           "6px",
+                        fontFamily:    "var(--font-body)",
+                        fontSize:      "13px",
+                        fontWeight:    600,
+                        color:         "var(--text-lunar)",
+                        textDecoration:"none",
+                        transition:    "color 0.25s",
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLElement).style.color = accentColor;
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLElement).style.color = "var(--text-lunar)";
+                      }}
                     >
                       Voir le projet
-                      <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      <ArrowUpRight size={15} />
                     </Link>
 
+                    {/* GitHub */}
                     <a
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs font-semibold px-3 py-1.5 rounded-full transition-all hover:scale-105"
                       style={{
-                        backgroundColor: `${accent}12`,
-                        border:          `1px solid ${accent}30`,
-                        color:           accent,
+                        fontFamily:    "var(--font-body)",
+                        fontSize:      "12px",
+                        fontWeight:    600,
+                        color:         "var(--text-muted)",
+                        textDecoration:"none",
+                        padding:       "6px 14px",
+                        borderRadius:  "50px",
+                        border:        "1px solid rgba(255,255,255,0.08)",
+                        background:    "rgba(255,255,255,0.03)",
+                        transition:    "all 0.25s",
+                      }}
+                      onMouseEnter={(e) => {
+                        const el = e.currentTarget as HTMLElement;
+                        el.style.borderColor = accentColor;
+                        el.style.color       = accentColor;
+                      }}
+                      onMouseLeave={(e) => {
+                        const el = e.currentTarget as HTMLElement;
+                        el.style.borderColor = "rgba(255,255,255,0.08)";
+                        el.style.color       = "var(--text-muted)";
                       }}
                     >
                       GitHub →
                     </a>
                   </div>
+
                 </GlassCard>
               </motion.div>
             );
           })}
         </div>
+
       </div>
     </section>
   );

@@ -10,6 +10,10 @@ interface GlassCardProps {
   tiltStrength?: number;
   /** Couleur du projecteur interne (défaut : rgba(0,212,255,0.10)) */
   glowColor?: string;
+  /** Activer l'inclinaison 3D au survol (défaut : true) */
+  tilt?: boolean;
+  /** Activer le projecteur interne (défaut : true) */
+  spotlight?: boolean;
   onClick?: () => void;
 }
 
@@ -33,6 +37,8 @@ export default function GlassCard({
   style = {},
   tiltStrength = 12,
   glowColor = "rgba(0, 212, 255, 0.10)",
+  tilt = true,
+  spotlight = true,
   onClick,
 }: GlassCardProps) {
   const cardRef   = useRef<HTMLDivElement>(null);
@@ -41,8 +47,7 @@ export default function GlassCard({
   /* ── Calcul de l'inclinaison ── */
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current;
-    const glow = glowRef.current;
-    if (!card || !glow) return;
+    if (!card) return;
 
     const rect   = card.getBoundingClientRect();
     // Position relative au centre de la carte (valeurs -0.5 à 0.5)
@@ -50,8 +55,9 @@ export default function GlassCard({
     const relY   = (e.clientY - rect.top)   / rect.height - 0.5;
 
     // Inclinaison : axe Y inversé (bord haut → penche vers nous)
-    const rotX   =  relY * -tiltStrength;
-    const rotY   =  relX *  tiltStrength;
+    // Seulement si tilt est activé
+    const rotX   = tilt ? relY * -tiltStrength : 0;
+    const rotY   = tilt ? relX *  tiltStrength : 0;
 
     card.style.transform = `
       perspective(900px)
@@ -61,11 +67,17 @@ export default function GlassCard({
     `;
 
     /* ── Déplacement du projecteur ── */
-    const glowX  = (e.clientX - rect.left);
-    const glowY  = (e.clientY - rect.top);
-    glow.style.opacity    = "1";
-    glow.style.left       = `${glowX}px`;
-    glow.style.top        = `${glowY}px`;
+    // Seulement si spotlight est activé
+    if (spotlight) {
+      const glow = glowRef.current;
+      if (!glow) return;
+      
+      const glowX  = (e.clientX - rect.left);
+      const glowY  = (e.clientY - rect.top);
+      glow.style.opacity    = "1";
+      glow.style.left       = `${glowX}px`;
+      glow.style.top        = `${glowY}px`;
+    }
   };
 
   const handleMouseLeave = () => {
@@ -108,22 +120,24 @@ export default function GlassCard({
       }}
     >
       {/* Projecteur interne (suit la souris) */}
-      <div
-        ref={glowRef}
-        aria-hidden="true"
-        style={{
-          position:       "absolute",
-          width:          "300px",
-          height:         "300px",
-          borderRadius:   "50%",
-          background:     `radial-gradient(circle, ${glowColor} 0%, transparent 70%)`,
-          transform:      "translate(-50%, -50%)",
-          pointerEvents:  "none",
-          opacity:        0,
-          transition:     "opacity 0.25s ease",
-          zIndex:         0,
-        }}
-      />
+      {spotlight && (
+        <div
+          ref={glowRef}
+          aria-hidden="true"
+          style={{
+            position:       "absolute",
+            width:          "300px",
+            height:         "300px",
+            borderRadius:   "50%",
+            background:     `radial-gradient(circle, ${glowColor} 0%, transparent 70%)`,
+            transform:      "translate(-50%, -50%)",
+            pointerEvents:  "none",
+            opacity:        0,
+            transition:     "opacity 0.25s ease",
+            zIndex:         0,
+          }}
+        />
+      )}
 
       {/* Contenu (z-index 1 pour passer au-dessus du projecteur) */}
       <div style={{ position: "relative", zIndex: 1 }}>
